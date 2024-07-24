@@ -1,12 +1,9 @@
-import { Posts } from "./Posts";
+import { Posts } from "./components/Posts";
 import "./App.css";
+import { usePosts } from "./usePosts";
 
 const App = () => {
-  const posts = [
-    { id: 1, title: "Post 1", body: "Post 1 body" },
-    { id: 2, title: "Post 2", body: "Post 2 body" },
-    { id: 3, title: "Post 3", body: "Post 3 body" },
-  ];
+  const { posts } = usePosts();
 
   return (
     <div className="container">
