@@ -1,0 +1,1 @@
+export const removePost = async (id: number) => {}

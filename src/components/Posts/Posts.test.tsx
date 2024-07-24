@@ -1,12 +1,17 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Posts } from "./Posts";
 import { PostContent } from "../../PostContent";
+import { vitest } from "vitest";
+import { removePost } from "./removePost";
 
 const POSTS: PostContent[] = [
   { id: 1, title: "Post 1", body: "Post 1 body" },
   { id: 2, title: "Post 2", body: "Post 2 body" },
   { id: 3, title: "Post 3", body: "Post 3 body" },
 ];
+
+vitest.mock('./removePost')
+const removePostMock = vitest.mocked(removePost)
 
 describe("<Posts />", () => {
   it("renders a list of posts", () => {
@@ -20,6 +25,13 @@ describe("<Posts />", () => {
     const postTitle = screen.getByText(post.title);
     expect(postTitle).toBeInTheDocument();
   });
+
+  it('removes a post when the remove button is clicked', () => {
+    render(<Posts posts={POSTS} />);
+    const removeButton = screen.getAllByRole('button', { name: 'Remove' })[0];
+    fireEvent.click(removeButton);
+    expect(removePostMock).toHaveBeenCalledWith(POSTS[0].id);
+  })
 
   describe("search bar", () => {
     it("displays a search bar", () => {
