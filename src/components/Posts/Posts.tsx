@@ -19,7 +19,7 @@ export const Posts: React.FC<{ posts: PostContent[] }> = ({ posts }) => {
       <ul className="posts">
         {filteredPosts.map((post) => (
           <li key={post.id}>
-            <Post post={post} />
+            <Post post={post} onRemove={() => {}} />
           </li>
         ))}
       </ul>
