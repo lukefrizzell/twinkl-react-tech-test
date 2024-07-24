@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PostContent } from "./components/Post";
+import { PostContent } from "../PostContent";
 import { getPosts } from "./getPosts";
 import { Result } from "./Result";
 

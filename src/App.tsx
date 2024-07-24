@@ -1,7 +1,6 @@
 import { Posts } from "./components/Posts";
+import { DataStatus, PostContent, usePosts } from "./usePosts";
 import "./App.css";
-import { DataStatus, usePosts } from "./usePosts";
-import { PostContent } from "./components/Post";
 
 type PostContentQueryStatus = DataStatus<PostContent[]>;
 
@@ -22,7 +21,7 @@ const App = () => {
   return (
     <div className="container">
       <div className="container-inner">
-        <Component {...result as any} />
+        <Component {...(result as any)} />
       </div>
     </div>
   );

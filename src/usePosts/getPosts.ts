@@ -1,5 +1,5 @@
 import { Result } from "./Result";
-import { PostContent } from "./components/Post";
+import { PostContent } from "../usePosts";
 
 export const POSTS_URI = "https://jsonplaceholder.typicode.com/posts";
 

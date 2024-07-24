@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { vitest } from "vitest";
 import { usePosts } from "./usePosts";
 import { getPosts } from "./getPosts";
-import { PostContent } from "./components/Post";
+import { PostContent } from "../PostContent";
 
 vitest.mock("./getPosts");
 

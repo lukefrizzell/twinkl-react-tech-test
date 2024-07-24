@@ -1,6 +1,6 @@
 import React from "react";
 import './Post.css'
-import { PostContent } from "./PostContent";
+import { PostContent } from "../../usePosts";
 
 export const Post: React.FC<{ post: PostContent }> = ({ post }) => {
   return (
