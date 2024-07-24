@@ -9,13 +9,13 @@ const POSTS: PostContent[] = [
 ];
 
 describe("<Posts />", () => {
-  it("should render a list of posts", () => {
+  it("renders a list of posts", () => {
     render(<Posts posts={POSTS} />);
     const posts = screen.getAllByRole("listitem");
     expect(posts).toHaveLength(POSTS.length);
   });
 
-  it.each(POSTS)("should display the post title", (post) => {
+  it.each(POSTS)("displays the post title", (post) => {
     render(<Posts posts={POSTS} />);
     const postTitle = screen.getByText(post.title);
     expect(postTitle).toBeInTheDocument();
