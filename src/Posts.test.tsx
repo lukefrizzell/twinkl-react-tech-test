@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { Posts } from "./Posts";
+import { PostContent } from "./Post";
 
-const POSTS = [
-  { id: 1, title: "Post 1" },
-  { id: 2, title: "Post 2" },
-  { id: 3, title: "Post 3" },
+const POSTS: PostContent[] = [
+  { id: 1, title: "Post 1", body: "Post 1 body" },
+  { id: 2, title: "Post 2", body: "Post 2 body" },
+  { id: 3, title: "Post 3", body: "Post 3 body" },
 ];
 
 describe("<Posts />", () => {
