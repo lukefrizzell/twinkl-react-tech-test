@@ -1,28 +1,7 @@
-import { useCallback, useState } from "react";
 import { PostContent } from "../../PostContent";
 import { Post } from "../Post";
+import { useSearchablePosts } from "./useSearchablePosts";
 import "./Posts.css";
-
-const useSearchablePosts = (posts: PostContent[]) => {
-  const [filteredPosts, setFilteredPosts] = useState<PostContent[]>(posts);
-
-  const search = useCallback(
-    (searchTerm: string) => {
-      const lowerSearchTerm = searchTerm.toLowerCase();
-
-      const filteredPosts = posts.filter(
-        (post) =>
-          post.title.toLowerCase().includes(lowerSearchTerm) ||
-          post.body.toLowerCase().includes(lowerSearchTerm)
-      );
-
-      setFilteredPosts(filteredPosts);
-    },
-    [posts]
-  );
-
-  return { filteredPosts, search };
-};
 
 export const Posts: React.FC<{ posts: PostContent[] }> = ({ posts }) => {
   const { filteredPosts, search } = useSearchablePosts(posts);
