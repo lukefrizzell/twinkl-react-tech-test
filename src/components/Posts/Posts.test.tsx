@@ -2,13 +2,12 @@ import {
   render,
   screen,
   fireEvent,
-  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { Posts } from "./Posts";
 import { PostContent } from "../../PostContent";
 import { vitest } from "vitest";
-import { removePost } from "./removePost";
+import { removePost } from "./useRemovePost/removePost";
 
 const POSTS: PostContent[] = [
   { id: 1, title: "Post 1", body: "Post 1 body" },
@@ -16,7 +15,7 @@ const POSTS: PostContent[] = [
   { id: 3, title: "Post 3", body: "Post 3 body" },
 ];
 
-vitest.mock("./removePost");
+vitest.mock("./useRemovePost/removePost");
 const removePostMock = vitest.mocked(removePost);
 
 describe("<Posts />", () => {

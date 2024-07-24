@@ -1,8 +1,8 @@
 import { PostContent } from "../../PostContent";
 import { Post } from "../Post";
-import "./Posts.css";
 import { useRemovePost } from "./useRemovePost";
 import { useSearchablePosts } from "./useSearchablePosts";
+import "./Posts.css";
 
 export const Posts: React.FC<{ posts: PostContent[] }> = ({ posts }) => {
   const { remainingPosts, removePost, error } = useRemovePost(posts);

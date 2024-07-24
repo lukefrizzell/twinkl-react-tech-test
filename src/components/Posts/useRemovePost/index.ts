@@ -1,0 +1,1 @@
+export { useRemovePost } from "./useRemovePost";

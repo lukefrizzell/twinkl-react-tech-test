@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { PostContent } from "../..//PostContent";
+import { PostContent } from "../../../PostContent";
 import { removePost as remove } from "./removePost";
 
 export const useRemovePost = (posts: PostContent[]) => {
