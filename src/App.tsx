@@ -1,3 +1,5 @@
+import { Posts } from "./Posts";
+
 const App = () => {
   const posts = [
       { id: 1, },
@@ -7,11 +9,7 @@ const App = () => {
 
   return (
       <div>
-          <ul>
-              {posts.map(post => (
-                  <li key={post.id}>post</li>
-              ))}
-          </ul>
+         <Posts posts={posts} />
       </div>
   )
 }
