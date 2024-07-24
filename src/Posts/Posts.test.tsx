@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Posts } from "./Posts";
-import { PostContent } from "./Post";
+import { PostContent } from "@/Post/PostContent";
 
 const POSTS: PostContent[] = [
   { id: 1, title: "Post 1", body: "Post 1 body" },

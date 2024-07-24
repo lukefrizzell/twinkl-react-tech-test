@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { Post, PostContent } from "./Post";
+import { Post } from "./Post";
+import { PostContent } from "./PostContent";
 
 const POST: PostContent = { id: 1, title: "Post 1", body: "Post 1 body" };
 

@@ -1,11 +1,6 @@
 import React from "react";
 import './Post.css'
-
-export type PostContent = {
-  id: number;
-  title: string;
-  body: string;
-};
+import { PostContent } from "./PostContent";
 
 export const Post: React.FC<{ post: PostContent }> = ({ post }) => {
   return (
