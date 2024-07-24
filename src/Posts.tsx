@@ -4,7 +4,7 @@ export const Posts: React.FC<{ posts: Post[] }> = ({ posts }) => {
   return (
     <ul>
       {posts.map((post) => (
-        <li key={post.id}>post</li>
+        <li key={post.id}>{post.title}</li>
       ))}
     </ul>
   );
