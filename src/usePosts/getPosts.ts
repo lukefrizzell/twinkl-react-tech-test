@@ -1,4 +1,4 @@
-import { Result } from "./Result";
+import { Result } from "../Result";
 import { PostContent } from "../PostContent";
 
 export const POSTS_URI = "https://jsonplaceholder.typicode.com/posts";
@@ -11,6 +11,14 @@ const isPostContent = (data: any): data is PostContent =>
 export const getPosts = async (): Promise<Result<PostContent[]>> => {
   try {
     const response = await fetch(POSTS_URI);
+
+    if (!response.ok) {
+      return {
+        outcome: "error",
+        error: "Failed to fetch posts",
+      };
+    }
+
     const data = await response.json();
 
     if (!Array.isArray(data)) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PostContent } from "../PostContent";
 import { getPosts } from "./getPosts";
-import { Result } from "./Result";
+import { Result } from "../Result";
 
 type LoadingStatus = { outcome: "loading" };
 export type DataStatus<TData> = Result<TData> | LoadingStatus;
