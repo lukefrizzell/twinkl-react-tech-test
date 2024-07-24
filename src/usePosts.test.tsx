@@ -12,15 +12,13 @@ const POSTS: PostContent[] = [
 ];
 
 const Posts: React.FC = () => {
-  const { posts, loading, error } = usePosts();
+  const { result } = usePosts();
 
   return (
     <div>
-      {error && <div>{error}</div>}
-      {loading && <div>Loading...</div>}
-      {posts.map((post) => (
-        <div data-testid="post" key={post.id} />
-      ))}
+      outcome: {result.outcome}
+      {result.outcome === "success" &&
+        result.data.map((post) => <div data-testid="post" key={post.id} />)}
     </div>
   );
 };
@@ -30,7 +28,7 @@ const getPostsMock = vitest.mocked(getPosts);
 describe("usePosts", () => {
   describe("when posts are loading", () => {
     beforeEach(() => {
-      getPostsMock.mockResolvedValue({outcome: 'success', data: []});
+      getPostsMock.mockResolvedValue({ outcome: "success", data: [] });
     });
 
     it("returns an empty list whilst loading", () => {
@@ -41,7 +39,7 @@ describe("usePosts", () => {
 
     it("returns a loading state", () => {
       render(<Posts />);
-      const loading = screen.getByText("Loading...");
+      const loading = screen.queryByText('outcome: loading');
       expect(loading).toBeInTheDocument();
     });
   });
@@ -60,7 +58,7 @@ describe("usePosts", () => {
     it("does not display the loading state once loaded", async () => {
       render(<Posts />);
       await screen.findAllByTestId("post");
-      const loading = screen.queryByText("Loading...");
+      const loading = screen.queryByText('outcome: loading');
       expect(loading).not.toBeInTheDocument();
     });
   });
@@ -75,7 +73,7 @@ describe("usePosts", () => {
 
     it("displays an error message", async () => {
       render(<Posts />);
-      const error = await screen.findByText("Could not load posts");
+      const error = await screen.findByText("outcome: error");
       expect(error).toBeInTheDocument();
     });
   });

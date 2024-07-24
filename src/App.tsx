@@ -1,15 +1,28 @@
 import { Posts } from "./components/Posts";
 import "./App.css";
-import { usePosts } from "./usePosts";
+import { DataStatus, usePosts } from "./usePosts";
+import { PostContent } from "./components/Post";
+
+type PostContentQueryStatus = DataStatus<PostContent[]>;
+
+const ComponentsByResult: {
+  [Outcome in PostContentQueryStatus["outcome"]]: React.FC<
+    Extract<PostContentQueryStatus, { outcome: Outcome }>
+  >;
+} = {
+  loading: () => <div>Loading...</div>,
+  success: (result) => <Posts posts={result.data} />,
+  error: () => null,
+};
 
 const App = () => {
-  const { posts, loading } = usePosts();
+  const { result } = usePosts();
+  const Component = ComponentsByResult[result.outcome];
 
   return (
     <div className="container">
       <div className="container-inner">
-        {loading && <div>Loading...</div>}
-        <Posts posts={posts} />
+        <Component {...result as any} />
       </div>
     </div>
   );

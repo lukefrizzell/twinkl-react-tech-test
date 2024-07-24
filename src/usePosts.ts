@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react";
 import { PostContent } from "./components/Post";
 import { getPosts } from "./getPosts";
+import { Result } from "./Result";
+
+type LoadingStatus = { outcome: "loading" };
+export type DataStatus<TData> = Result<TData> | LoadingStatus;
 
 export const usePosts = () => {
-  const [posts, setPosts] = useState<PostContent[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<DataStatus<PostContent[]>>({
+    outcome: "loading",
+  });
 
   useEffect(() => {
     const initialisePosts = async () => {
-      const result = await getPosts();
-      
-      if(result.outcome === "error") {
-        setLoading(false);
-        setError("Could not load posts");
-        return 
-      }
-
-      setPosts(result.data);
-      setLoading(false);
+      const getPostsResult = await getPosts();
+      setResult(getPostsResult);
     };
 
     initialisePosts();
-  }, [setLoading, setPosts]);
+  }, [setResult]);
 
-  return { posts, loading, error };
+  return { result };
 };
