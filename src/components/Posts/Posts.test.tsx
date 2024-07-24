@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Posts } from "./Posts";
 import { PostContent } from "../../PostContent";
 import { vitest } from "vitest";
@@ -26,48 +26,52 @@ describe("<Posts />", () => {
     expect(postTitle).toBeInTheDocument();
   });
 
-  it('removes a post when the remove button is clicked', () => {
+  it('removes a post when the remove button is clicked', async () => {
     render(<Posts posts={POSTS} />);
     const removeButton = screen.getAllByRole('button', { name: 'Remove' })[0];
     fireEvent.click(removeButton);
     expect(removePostMock).toHaveBeenCalledWith(POSTS[0].id);
+    await waitFor (() => expect(screen.queryByText(POSTS[0].title)).not.toBeInTheDocument())
   })
 
-  describe("search bar", () => {
-    it("displays a search bar", () => {
-      render(<Posts posts={POSTS} />);
-      const searchBar = screen.getByRole("search");
-      expect(searchBar).toBeInTheDocument();
-    });
 
-    it("filters posts by title", () => {
-      render(<Posts posts={POSTS} />);
-      const searchBar = screen.getByRole("search");
-
-      fireEvent.change(searchBar, { target: { value: "1" } });
-
-      const posts = screen.getAllByRole("listitem");
-      expect(posts).toHaveLength(1);
-    });
-
-    it("filters posts by body", () => {
-      render(<Posts posts={POSTS} />);
-      const searchBar = screen.getByRole("search");
-
-      fireEvent.change(searchBar, { target: { value: "3 body" } });
-
-      const posts = screen.getAllByRole("listitem");
-      expect(posts).toHaveLength(1);
-    });
-
-    it("accepts search term in any case", () => {
-      render(<Posts posts={POSTS} />);
-      const searchBar = screen.getByRole("search");
-
-      fireEvent.change(searchBar, { target: { value: "POST 3 BODY" } });
-
-      const posts = screen.getAllByRole("listitem");
-      expect(posts).toHaveLength(1);
-    });
+describe("search bar", () => {
+  it("displays a search bar", () => {
+    render(<Posts posts={POSTS} />);
+    const searchBar = screen.getByRole("search");
+    expect(searchBar).toBeInTheDocument();
   });
+
+  it("filters posts by title", () => {
+    render(<Posts posts={POSTS} />);
+    const searchBar = screen.getByRole("search");
+
+    fireEvent.change(searchBar, { target: { value: "1" } });
+
+    const posts = screen.getAllByRole("listitem");
+    expect(posts).toHaveLength(1);
+  });
+
+  it("filters posts by body", () => {
+    render(<Posts posts={POSTS} />);
+    const searchBar = screen.getByRole("search");
+
+    fireEvent.change(searchBar, { target: { value: "3 body" } });
+
+    const posts = screen.getAllByRole("listitem");
+    expect(posts).toHaveLength(1);
+  });
+
+  it("accepts search term in any case", () => {
+    render(<Posts posts={POSTS} />);
+    const searchBar = screen.getByRole("search");
+
+    fireEvent.change(searchBar, { target: { value: "POST 3 BODY" } });
+
+    const posts = screen.getAllByRole("listitem");
+    expect(posts).toHaveLength(1);
+  });
+});
+
+
 });

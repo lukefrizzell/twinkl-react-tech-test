@@ -1,4 +1,4 @@
-import { Result } from "../../Result";
+import { Result } from "../../usePosts/Result";
 
 export const removePost = async (id: number): Promise<Result<null>> => {
   try {
