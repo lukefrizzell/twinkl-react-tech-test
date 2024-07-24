@@ -9,7 +9,7 @@ export const Post: React.FC<{ post: PostContent; onRemove: () => void }> = ({
   return (
     <div className="post">
       <div className="post-content">
-        <div>{post.title}</div>
+        <div className="post-title">{post.title}</div>
         <div>{post.body}</div>
       </div>
       <div className="post-actions">
