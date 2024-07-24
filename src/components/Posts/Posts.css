@@ -1,0 +1,17 @@
+.posts {
+  list-style: none;
+  padding: 0;
+}
+
+.searchbar {
+  width: 100%;
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.searchbar input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2em;
+}

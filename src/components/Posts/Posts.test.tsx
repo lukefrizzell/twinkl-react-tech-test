@@ -1,0 +1,61 @@
+import { render, screen, fireEvent } from "@testing-library/react";
+import { Posts } from "./Posts";
+import { PostContent } from "../../PostContent";
+
+const POSTS: PostContent[] = [
+  { id: 1, title: "Post 1", body: "Post 1 body" },
+  { id: 2, title: "Post 2", body: "Post 2 body" },
+  { id: 3, title: "Post 3", body: "Post 3 body" },
+];
+
+describe("<Posts />", () => {
+  it("renders a list of posts", () => {
+    render(<Posts posts={POSTS} />);
+    const posts = screen.getAllByRole("listitem");
+    expect(posts).toHaveLength(POSTS.length);
+  });
+
+  it.each(POSTS)("displays the post title", (post) => {
+    render(<Posts posts={POSTS} />);
+    const postTitle = screen.getByText(post.title);
+    expect(postTitle).toBeInTheDocument();
+  });
+
+  describe("search bar", () => {
+    it("displays a search bar", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
+      expect(searchBar).toBeInTheDocument();
+    });
+
+    it("filters posts by title", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
+
+      fireEvent.change(searchBar, { target: { value: "1" } });
+
+      const posts = screen.getAllByRole("listitem");
+      expect(posts).toHaveLength(1);
+    });
+
+    it("filters posts by body", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
+
+      fireEvent.change(searchBar, { target: { value: "3 body" } });
+
+      const posts = screen.getAllByRole("listitem");
+      expect(posts).toHaveLength(1);
+    });
+
+    it("accepts search term in any case", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
+
+      fireEvent.change(searchBar, { target: { value: "POST 3 BODY" } });
+
+      const posts = screen.getAllByRole("listitem");
+      expect(posts).toHaveLength(1);
+    });
+  });
+});
