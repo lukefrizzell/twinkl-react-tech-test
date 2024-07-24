@@ -5,11 +5,12 @@ import { useRemovePost } from "./useRemovePost";
 import { useSearchablePosts } from "./useSearchablePosts";
 
 export const Posts: React.FC<{ posts: PostContent[] }> = ({ posts }) => {
-  const { remainingPosts, removePost } = useRemovePost(posts);
+  const { remainingPosts, removePost, error } = useRemovePost(posts);
   const { filteredPosts, search } = useSearchablePosts(remainingPosts);
 
   return (
     <div>
+      {error && <div className="error">{error}</div>}
       <div className="searchbar">
         <input
           type="text"

@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { Posts } from "./Posts";
 import { PostContent } from "../../PostContent";
 import { vitest } from "vitest";
@@ -10,10 +16,15 @@ const POSTS: PostContent[] = [
   { id: 3, title: "Post 3", body: "Post 3 body" },
 ];
 
-vitest.mock('./removePost')
-const removePostMock = vitest.mocked(removePost)
+vitest.mock("./removePost");
+const removePostMock = vitest.mocked(removePost);
 
 describe("<Posts />", () => {
+  beforeEach(() => {
+    vitest.resetAllMocks();
+    removePostMock.mockResolvedValue({ outcome: "success", data: null });
+  });
+
   it("renders a list of posts", () => {
     render(<Posts posts={POSTS} />);
     const posts = screen.getAllByRole("listitem");
@@ -26,52 +37,63 @@ describe("<Posts />", () => {
     expect(postTitle).toBeInTheDocument();
   });
 
-  it('removes a post when the remove button is clicked', async () => {
+  it("removes a post when the remove button is clicked", async () => {
     render(<Posts posts={POSTS} />);
-    const removeButton = screen.getAllByRole('button', { name: 'Remove' })[0];
+    const removeButton = screen.getAllByRole("button", { name: "Remove" })[0];
     fireEvent.click(removeButton);
     expect(removePostMock).toHaveBeenCalledWith(POSTS[0].id);
-    await waitFor (() => expect(screen.queryByText(POSTS[0].title)).not.toBeInTheDocument())
-  })
-
-
-describe("search bar", () => {
-  it("displays a search bar", () => {
-    render(<Posts posts={POSTS} />);
-    const searchBar = screen.getByRole("search");
-    expect(searchBar).toBeInTheDocument();
+    await waitForElementToBeRemoved(() => screen.queryByText(POSTS[0].title));
   });
 
-  it("filters posts by title", () => {
+  it("does not remove a post when the remove button is clicked and the API call fails", async () => {
+    removePostMock.mockResolvedValue({
+      outcome: "error",
+      error: "Failed to remove post",
+    });
     render(<Posts posts={POSTS} />);
-    const searchBar = screen.getByRole("search");
-
-    fireEvent.change(searchBar, { target: { value: "1" } });
-
-    const posts = screen.getAllByRole("listitem");
-    expect(posts).toHaveLength(1);
+    const removeButton = screen.getAllByRole("button", { name: "Remove" })[0];
+    fireEvent.click(removeButton);
+    expect(removePostMock).toHaveBeenCalledWith(POSTS[0].id);
+    expect(
+      await screen.findByText("Failed to remove post")
+    ).toBeInTheDocument();
   });
 
-  it("filters posts by body", () => {
-    render(<Posts posts={POSTS} />);
-    const searchBar = screen.getByRole("search");
+  describe("search bar", () => {
+    it("displays a search bar", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
+      expect(searchBar).toBeInTheDocument();
+    });
 
-    fireEvent.change(searchBar, { target: { value: "3 body" } });
+    it("filters posts by title", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
 
-    const posts = screen.getAllByRole("listitem");
-    expect(posts).toHaveLength(1);
+      fireEvent.change(searchBar, { target: { value: "1" } });
+
+      const posts = screen.getAllByRole("listitem");
+      expect(posts).toHaveLength(1);
+    });
+
+    it("filters posts by body", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
+
+      fireEvent.change(searchBar, { target: { value: "3 body" } });
+
+      const posts = screen.getAllByRole("listitem");
+      expect(posts).toHaveLength(1);
+    });
+
+    it("accepts search term in any case", () => {
+      render(<Posts posts={POSTS} />);
+      const searchBar = screen.getByRole("search");
+
+      fireEvent.change(searchBar, { target: { value: "POST 3 BODY" } });
+
+      const posts = screen.getAllByRole("listitem");
+      expect(posts).toHaveLength(1);
+    });
   });
-
-  it("accepts search term in any case", () => {
-    render(<Posts posts={POSTS} />);
-    const searchBar = screen.getByRole("search");
-
-    fireEvent.change(searchBar, { target: { value: "POST 3 BODY" } });
-
-    const posts = screen.getAllByRole("listitem");
-    expect(posts).toHaveLength(1);
-  });
-});
-
-
 });

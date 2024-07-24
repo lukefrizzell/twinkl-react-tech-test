@@ -4,6 +4,7 @@ import { removePost as remove } from "./removePost";
 
 export const useRemovePost = (posts: PostContent[]) => {
   const [remainingPosts, setRemainingPosts] = useState(posts);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setRemainingPosts(posts);
@@ -11,12 +12,17 @@ export const useRemovePost = (posts: PostContent[]) => {
 
   const removePost = useCallback(
     async (id: number) => {
-      await remove(id);
+      const result = await remove(id);
+
+      if (result.outcome === "error") {
+        setError("Failed to remove post");
+      }
+
       const updatedPosts = remainingPosts.filter((post) => post.id !== id);
       setRemainingPosts(updatedPosts);
     },
     [remainingPosts, setRemainingPosts]
   );
 
-  return { remainingPosts, removePost };
+  return { remainingPosts, removePost, error };
 };
