@@ -1,4 +1,5 @@
 import { Posts } from "./Posts";
+import "./App.css";
 
 const App = () => {
   const posts = [
@@ -8,8 +9,10 @@ const App = () => {
   ];
 
   return (
-    <div>
-      <Posts posts={posts} />
+    <div className="container">
+      <div className="container-inner">
+        <Posts posts={posts} />
+      </div>
     </div>
   );
 };
