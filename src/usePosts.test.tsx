@@ -12,10 +12,11 @@ const POSTS: PostContent[] = [
 ];
 
 const Posts: React.FC = () => {
-  const { posts, loading } = usePosts();
+  const { posts, loading, error } = usePosts();
 
   return (
     <div>
+      {error && <div>{error}</div>}
       {loading && <div>Loading...</div>}
       {posts.map((post) => (
         <div data-testid="post" key={post.id} />
@@ -29,7 +30,7 @@ const getPostsMock = vitest.mocked(getPosts);
 describe("usePosts", () => {
   describe("when posts are loading", () => {
     beforeEach(() => {
-      getPostsMock.mockResolvedValue([]);
+      getPostsMock.mockResolvedValue({outcome: 'success', data: []});
     });
 
     it("returns an empty list whilst loading", () => {
@@ -47,7 +48,7 @@ describe("usePosts", () => {
 
   describe("when posts are loaded", () => {
     beforeEach(() => {
-        getPostsMock.mockResolvedValue(POSTS);
+      getPostsMock.mockResolvedValue({ outcome: "success", data: POSTS });
     });
 
     it("returns a list of posts once loaded", async () => {
@@ -61,6 +62,21 @@ describe("usePosts", () => {
       await screen.findAllByTestId("post");
       const loading = screen.queryByText("Loading...");
       expect(loading).not.toBeInTheDocument();
+    });
+  });
+
+  describe("when posts fail to load", () => {
+    beforeEach(() => {
+      getPostsMock.mockResolvedValue({
+        outcome: "error",
+        error: "Failed to load posts",
+      });
+    });
+
+    it("displays an error message", async () => {
+      render(<Posts />);
+      const error = await screen.findByText("Could not load posts");
+      expect(error).toBeInTheDocument();
     });
   });
 });
