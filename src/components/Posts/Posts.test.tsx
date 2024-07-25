@@ -38,7 +38,7 @@ describe("<Posts />", () => {
 
   it("removes a post when the remove button is clicked", async () => {
     render(<Posts posts={POSTS} />);
-    const removeButton = screen.getAllByRole("button", { name: "Remove" })[0];
+    const removeButton = screen.getAllByLabelText("Remove")[0];
     fireEvent.click(removeButton);
     expect(removePostMock).toHaveBeenCalledWith(POSTS[0].id);
     await waitForElementToBeRemoved(() => screen.queryByText(POSTS[0].title));
@@ -50,7 +50,7 @@ describe("<Posts />", () => {
       error: "Failed to remove post",
     });
     render(<Posts posts={POSTS} />);
-    const removeButton = screen.getAllByRole("button", { name: "Remove" })[0];
+    const removeButton = screen.getAllByLabelText("Remove")[0];
     fireEvent.click(removeButton);
     expect(removePostMock).toHaveBeenCalledWith(POSTS[0].id);
     expect(

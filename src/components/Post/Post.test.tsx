@@ -26,13 +26,13 @@ describe("<Post />", () => {
 
   it("displays a remove button", () => {
     render(<Post post={POST} onRemove={() => onRemove()} />);
-    const removeButton = screen.getByRole("button", { name: "Remove" });
+    const removeButton = screen.getByLabelText("Remove");
     expect(removeButton).toBeInTheDocument();
   });
 
   it("calls onRemove when the remove button is clicked", () => {
     render(<Post post={POST} onRemove={() => onRemove()} />);
-    const removeButton = screen.getByRole("button", { name: "Remove" });
+    const removeButton = screen.getByLabelText("Remove");
     removeButton.click();
     expect(onRemove).toHaveBeenCalled();
   });
