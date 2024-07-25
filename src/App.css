@@ -1,8 +1,10 @@
-.container-inner{
-    margin: auto;
-}
-
 .container-inner {
     max-width: 1200px;
     width: 100%;
+    margin: auto;
+    padding: 20px;
+}
+
+body {
+    background-color: rgb(243, 243, 243);
 }
